@@ -1,6 +1,6 @@
 FROM ruby:2.6.2-alpine
 ARG REPO_URL="https://github.com/StarGate01/Portus.git"
-ARG REPO_TAG="master"
+ARG REPO_TAG="v2.5"
 ARG VERSION_STRING="v2.5"
 
 ENV RACK_ENV=production RAILS_ENV=production NODE_ENV=production \
@@ -17,10 +17,15 @@ RUN apk add --no-cache ca-certificates git bash curl npm yarn tzdata openssl-dev
     cd / && rm -rf /root/go && echo "Cloning ${REPO_URL}#${REPO_TAG}" && \
     cd /srv && git clone -b "${REPO_TAG}" "${REPO_URL}" Portus && \
     cd Portus && echo "${VERSION_STRING}-$(git rev-parse --short HEAD)" > VERSION && rm -rf .git && \
-    yarn install --production=false && \
+    yarn install --production=false && bundle update && \
     bundle install --without test development --with assets --path ./vendor/bundle && \
     gem install bundler -v 1.17.3 -i ./vendor/bundle/ruby/2.6.0 -n ./vendor/bundle/ruby/2.6.0/bin && \
     ln -s bundler ./vendor/bundle/ruby/2.6.0/bin/bundler.ruby2.6 && \
+    mkdir -p /srv/Portus/app/assets/config && touch /srv/Portus/app/assets/config/manifest.js && \
+    echo "//= link_tree ../images" > /srv/Portus/app/assets/config/manifest.js && \
+    echo "//= link_directory ../javascripts .js" > /srv/Portus/app/assets/config/manifest.js && \
+    echo "//= link_directory ../stylesheets .css" > /srv/Portus/app/assets/config/manifest.js && \
+    sed -i 's/config.assets.js_compressor = :uglifier/config.assets.js_compressor = Uglifier.new(harmony: true)/g' /srv/Portus/config/environments/production.rb && \
     ./bin/bundle exec rake portus:assets:compile && \
     rm -r ./vendor/bundle/ruby/2.6.0/cache/* && \
     rm -rf ./node_modules && \
