@@ -1,15 +1,6 @@
 # Changelog
 Documentation of changes
 
-## [2.5.2] - 2021-08-22
-### Added
-- Applied updates from original repository StarGate01/Portus
-- Enabled support for ARMv7 and ARMv64
-
-### Changed
-- Changed .gitlab-ci.yml to new format
-- Fixed build issues due to ruby changes
-
 ## [2.5.1] - 2021-03-05
 ### Added
 - Added .gitlab-ci.yml for GitLab Pipelines
