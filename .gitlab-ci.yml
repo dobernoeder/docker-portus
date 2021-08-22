@@ -54,6 +54,7 @@ build:
     - BUILD_CONTAINER=`docker buildx create --driver docker-container --use --buildkitd-flags '--oci-worker-gc --oci-worker-gc-keepstorage 40960' --driver-opt image=$CI_BUILD_KIT`
     - BUILD_CONTAINER="buildx_buildkit_""$BUILD_CONTAINER""0"
     - docker buildx inspect --bootstrap
+    - docker pull $CI_REGISTRY_IMAGE:$PREVIOUS_VERSION
     - echo " "
     - echo " ------------------------------------------------------------------------------------------------------------------------------"
 
