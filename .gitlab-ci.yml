@@ -44,7 +44,7 @@ build:
     - echo " "
     - echo " Login to Registry $CI_REGISTRY"
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
-    - export PREVIOUS_VERSION=$(perl -lne 'print "${1}" if /^##\s\[(\d\.\d\.\d)\]\s-\s\d{4}(?:-\d{2}){2}\s*$/' CHANGELOG.md | sed -n '2 p')
+    - export PREVIOUS_VERSION=$(perl -lne 'print "${1}" if /^##\s\[(\d\.\d\.\d)\]\s-\s\d{4}(?:-\d{2}){2}\s*$/' CHANGELOG.md | sed '2 p')
     - echo " Ensure execution of other binary formats is enabled in the kernel and prepare multi-arch environment for build..."
     - update-binfmts --enable
     - docker run --rm --privileged $CI_MULTIARCH_INIT_IMAGE --reset -p yes
