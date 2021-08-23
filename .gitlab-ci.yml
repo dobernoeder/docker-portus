@@ -69,8 +69,8 @@ build:
     - echo " "
     - >
       docker buildx build
-      --cache-from type=registry,ref=$CI_REGISTRY_IMAGE:$PREVIOUS_VERSION
-      --cache-from type=registry,ref=$CI_REGISTRY_IMAGE:master
+      --cache-from type=registry,ref=$CI_REGISTRY_IMAGE:$PREVIOUS_VERSION-cache
+      --cache-from type=registry,ref=$CI_REGISTRY_IMAGE:master-cache
       --cache-from type=registry,ref=$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME-cache
       --cache-to type=registry,ref=$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME-cache,mode=max
       --platform $CI_BUILD_ARCHS --progress plain --pull
